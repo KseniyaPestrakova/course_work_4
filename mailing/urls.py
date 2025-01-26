@@ -2,12 +2,14 @@ from django.urls import path
 
 from .views import SubscriberListView, SubscriberDetailView, SubscriberCreateView, SubscriberUpdateView, \
     SubscriberDeleteView, MessageListView, MessageDetailView, MessageCreateView, MessageUpdateView, MessageDeleteView, \
-    NewsletterListView, NewsletterDetailView, NewsletterCreateView, NewsletterUpdateView, NewsletterDeleteView
+    NewsletterListView, NewsletterDetailView, NewsletterCreateView, NewsletterUpdateView, NewsletterDeleteView, \
+    HomeTemplateView
 
 app_name = 'mailing'
 
 urlpatterns = [
-    path("", SubscriberListView.as_view(), name="subscriber_list"),
+    path("", HomeTemplateView.as_view(), name="home"),
+    path("subscriber/", SubscriberListView.as_view(), name="subscriber_list"),
     path("subscriber/<int:pk>/", SubscriberDetailView.as_view(), name="subscriber_detail"),
     path("subscriber/create/", SubscriberCreateView.as_view(), name="subscriber_create"),
     path("subscriber/update/<int:pk>/", SubscriberUpdateView.as_view(), name="subscriber_update"),

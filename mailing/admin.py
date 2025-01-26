@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Subscriber, Message, Newsletter
+from .models import Subscriber, Message, Newsletter, AttemptSent
 
 
 @admin.register(Subscriber)
@@ -18,3 +18,9 @@ class MessageAdmin(admin.ModelAdmin):
 class MessageAdmin(admin.ModelAdmin):
     list_display = ("start_sent_at", "finish_sent_at", "status")
     search_fields = ("status", "message")
+
+
+@admin.register(AttemptSent)
+class AttemptSentAdmin(admin.ModelAdmin):
+    list_display = ("created_at", "status", "server_response")
+    search_fields = ("status", "server_response")

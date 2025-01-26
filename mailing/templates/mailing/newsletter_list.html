@@ -12,7 +12,13 @@
             <div class="d-flex gap-2 w-100 justify-content-between">
                 <div>
                     <h6 class="mb-0">Рассылка id {{ newsletter.pk }}</h6>
-                    <p class="mb-0 opacity-95">Статус рассылки: {{ newsletter.status }}</p>
+                    {% if newsletter.status == 'created' %}
+                    <p class="mb-0 opacity-95">Статус рассылки: Создана</p>
+                    {% elif newsletter.status == 'launched' %}
+                    <p class="mb-0 opacity-95">Статус рассылки: Запущена</p>
+                    {% elif newsletter.status == 'Completed' %}
+                    <p class="mb-0 opacity-95">Статус рассылки: Завершена</p>
+                    {% endif %}
                 </div>
             </div>
         </a>
