@@ -16,24 +16,16 @@
         </div>
     </div>
     <div class="row align-items-md-stretch">
-        <div class="col-md-6">
-            <div class="h-100 p-5 text-bg-dark rounded-3">
-                <h2>Узнать больше:</h2>
-                <div class="btn-group">
-                    <a class="btn btn-outline-info" href="{% url 'mailing:message_list' %}"
-                       role="button">Посмотреть все сообщения</a>
-                    <a class="btn btn-outline-info" href="{% url 'mailing:newsletter_list' %}"
-                       role="button">Посмотреть все рассылки</a>
-                    <a class="btn btn-outline-info" href="{% url 'mailing:subscriber_list' %}"
-                       role="button">Посмотреть всех получателей рассылки</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
+
+        <div class="col-md-12">
             <div class="h-100 p-5 bg-body-tertiary border rounded-3">
                 <h2>Статистика</h2>
-                <p></p>
-                <button class="btn btn-outline-secondary" type="button">Example button</button>
+                <p class="col-md-8 fs-6">Количество успешно запущенных рассылок:
+                <span class="badge rounded-pill text-bg-light">{{ successful_newsletter_count }}</span></p>
+                <p class="col-md-8 fs-6">Количество неудачных рассылок:
+                <span class="badge rounded-pill text-bg-light">{{ not_successful_newsletter_count }}</span></p>
+                <p class="col-md-8 fs-6">Отправлено уникальных сообщений:
+                <span class="badge rounded-pill text-bg-light">{{ sent_messages }}</span></p>
             </div>
         </div>
     </div>

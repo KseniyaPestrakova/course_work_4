@@ -42,8 +42,8 @@ class Newsletter(models.Model):
         (COMPLETED, 'Завершена'),
     ]
 
-    start_sent_at = models.DateTimeField(verbose_name='Дата и время первой отправки')
-    finish_sent_at = models.DateTimeField(verbose_name='Дата и время окончания отправки')
+    start_sent_at = models.DateTimeField(verbose_name='Дата и время первой отправки', blank=True, null=True,)
+    finish_sent_at = models.DateTimeField(verbose_name='Дата и время окончания отправки', blank=True, null=True,)
     status = models.CharField(
         max_length=10,
         choices=STATUS_CHOICES,
@@ -60,6 +60,7 @@ class Newsletter(models.Model):
     class Meta:
         verbose_name = "Рассылка"
         verbose_name_plural = "Рассылки"
+        permissions = [("disabling_newsletter", "Can disabling Newsletter"),]
 
 
 class AttemptSent(models.Model):
@@ -69,17 +70,15 @@ class AttemptSent(models.Model):
     STATUS_CHOICES = [
         (SUCCESSFUL, 'Успешно'),
         (NOT_SUCCESSFUL, 'Не успешно'),
-
     ]
 
     created_at = models.DateTimeField(auto_now=True)
-    status = models.CharField(
-        max_length=10,
-        choices=STATUS_CHOICES
-    )
-    server_response = models.TextField(verbose_name="Ответ почтового сервера")
-    newsletter = models.ForeignKey(Newsletter, on_delete=models.CASCADE)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES)
+    server_response = models.TextField(verbose_name="Ответ почтового сервера", blank=True, null=True,)
+    newsletter = models.ForeignKey(Newsletter, on_delete=models.CASCADE, related_name='newsletters')
     owner = models.ForeignKey(CustomUser, verbose_name="Автор", blank=True, null=True, on_delete=models.SET_NULL)
 
+    def __str__(self):
+        return f"Попытка для рассылки {self.newsletter} от {self.created_at}"
 
 

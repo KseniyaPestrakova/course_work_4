@@ -30,6 +30,12 @@ class UserRegisterForm(UserCreationForm):
         self.fields['password2'].widget.attrs.update({'class': 'form-control'})
 
 
+class UserManagerForm(UserCreationForm):
+    class Meta:
+        model = CustomUser
+        fields = ['is_active']
+
+
 class CustomUserUpdateForm(forms.ModelForm):
     class Meta:
         model = CustomUser

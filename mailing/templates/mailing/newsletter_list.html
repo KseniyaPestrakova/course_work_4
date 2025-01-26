@@ -3,8 +3,14 @@
 {% block content %}
 
 <div class="d-flex flex-column flex-md-row p-4 gap-4 py-md-5 align-items-center justify-content-center">
+    <a class="btn btn-primary" href="{% url 'mailing:newsletter_create' %}" role="button">Создать новую рассылку</a>
+</div>
+
+<div class="d-flex flex-column flex-md-row p-4 gap-4 py-md-5 align-items-center justify-content-center">
     <div class="list-group">
+
         {% for newsletter in object_list %}
+        {% if user == newsletter.owner %}
         <a href="{% url 'mailing:newsletter_detail' newsletter.pk %}"
            class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
             <img src="https://github.com/twbs.png" alt="twbs" width="32" height="32"
@@ -14,12 +20,18 @@
                     <h6 class="mb-0">Рассылка id {{ newsletter.pk }}</h6>
                     {% if newsletter.status == 'created' %}
                     <p class="mb-0 opacity-95">Статус рассылки: Создана</p>
+                    <form method="post" action="{% url 'mailing:launch_newsletter' newsletter.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">Запустить рассылку</button>
+                </form>
                     {% elif newsletter.status == 'launched' %}
                     <p class="mb-0 opacity-95">Статус рассылки: Запущена</p>
                     {% elif newsletter.status == 'Completed' %}
                     <p class="mb-0 opacity-95">Статус рассылки: Завершена</p>
                     {% endif %}
+                    {% endif %}
                 </div>
+
             </div>
         </a>
         {% endfor %}

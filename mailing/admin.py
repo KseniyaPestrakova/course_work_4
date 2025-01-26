@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Subscriber, Message, Newsletter, AttemptSent
+from .services import run_newsletter
 
 
 @admin.register(Subscriber)
@@ -15,9 +16,17 @@ class MessageAdmin(admin.ModelAdmin):
 
 
 @admin.register(Newsletter)
-class MessageAdmin(admin.ModelAdmin):
+class NewsletterAdmin(admin.ModelAdmin):
     list_display = ("start_sent_at", "finish_sent_at", "status")
     search_fields = ("status", "message")
+    actions = ['start_newsletter']
+
+    def start_newsletter(self, request, queryset):
+        for newsletter in queryset:
+            run_newsletter(newsletter.pk)
+        self.message_user(request, "Рассылка успешно запущена.")
+
+    start_newsletter.short_description = "Запустить выбранные рассылки"
 
 
 @admin.register(AttemptSent)

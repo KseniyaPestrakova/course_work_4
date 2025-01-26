@@ -1,3 +1,4 @@
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import DetailView
@@ -6,7 +7,7 @@ from django.core.mail import send_mail
 from django.contrib.auth import login
 
 from config.settings import EMAIL_HOST_USER
-from .forms import UserRegisterForm, CustomUserUpdateForm
+from .forms import UserRegisterForm, CustomUserUpdateForm, UserManagerForm
 from .models import CustomUser
 import secrets
 
@@ -56,3 +57,11 @@ class CustomUserUpdateView(UpdateView):
 
     def form_valid(self, form):
         return super().form_valid(form)
+
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.pk:
+            return CustomUser
+        elif user.has_perm("blocking_service_users") and user.has_perm("disabling_newsletter"):
+            return UserManagerForm
+        raise PermissionDenied

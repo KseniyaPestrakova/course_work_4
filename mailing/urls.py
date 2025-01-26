@@ -1,9 +1,10 @@
 from django.urls import path
 
+from . import views
 from .views import SubscriberListView, SubscriberDetailView, SubscriberCreateView, SubscriberUpdateView, \
     SubscriberDeleteView, MessageListView, MessageDetailView, MessageCreateView, MessageUpdateView, MessageDeleteView, \
     NewsletterListView, NewsletterDetailView, NewsletterCreateView, NewsletterUpdateView, NewsletterDeleteView, \
-    HomeTemplateView
+    HomeTemplateView, AttemptSentListView
 
 app_name = 'mailing'
 
@@ -24,4 +25,6 @@ urlpatterns = [
     path("newsletter/create/", NewsletterCreateView.as_view(), name="newsletter_create"),
     path("newsletter/update/<int:pk>/", NewsletterUpdateView.as_view(), name="newsletter_update"),
     path("newsletter/delete/<int:pk>/", NewsletterDeleteView.as_view(), name="newsletter_confirm_delete"),
+    path("attemptsent/", AttemptSentListView.as_view(), name="attemptsent_list"),
+    path('newsletter/<int:newsletter_id>/launch/', views.start_newsletter_view, name='launch_newsletter'),
     ]

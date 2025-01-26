@@ -121,9 +121,10 @@
     </a>
     {% if user.is_authenticated %}
     <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="{% url 'mailing:newsletter_list' %}" class="nav-link px-2">Сообщения</a></li>
+        <li><a href="{% url 'mailing:message_list' %}" class="nav-link px-2">Сообщения</a></li>
         <li><a href="{% url 'mailing:newsletter_list' %}" class="nav-link px-2">Рассылки</a></li>
         <li><a href="{% url 'mailing:subscriber_list' %}" class="nav-link px-2">Получатели</a></li>
+        <li><a href="{% url 'mailing:attemptsent_list' %}" class="nav-link px-2">Попытки рассылок</a></li>
     </ul>
 
     <div class="col-md-3 text-end">
