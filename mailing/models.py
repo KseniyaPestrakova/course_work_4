@@ -32,53 +32,62 @@ class Message(models.Model):
 
 
 class Newsletter(models.Model):
-    CREATED = 'created'
-    LAUNCHED = 'launched'
-    COMPLETED = 'Completed'
+    CREATED = "created"
+    LAUNCHED = "launched"
+    COMPLETED = "completed"
+    DISABLED = "disabled"
 
     STATUS_CHOICES = [
-        (CREATED, 'Создана'),
-        (LAUNCHED, 'Запущена'),
-        (COMPLETED, 'Завершена'),
+        (CREATED, "Создана"),
+        (LAUNCHED, "Запущена"),
+        (COMPLETED, "Завершена"),
+        (DISABLED, "Отключена"),
     ]
 
-    start_sent_at = models.DateTimeField(verbose_name='Дата и время первой отправки', blank=True, null=True,)
-    finish_sent_at = models.DateTimeField(verbose_name='Дата и время окончания отправки', blank=True, null=True,)
-    status = models.CharField(
-        max_length=10,
-        choices=STATUS_CHOICES,
-        default=CREATED,
-        verbose_name='Статус рассылки'
+    start_sent_at = models.DateTimeField(
+        verbose_name="Дата и время первой отправки",
+        blank=True,
+        null=True,
     )
+    finish_sent_at = models.DateTimeField(
+        verbose_name="Дата и время окончания отправки",
+        blank=True,
+        null=True,
+    )
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=CREATED, verbose_name="Статус рассылки")
     message = models.ForeignKey(Message, blank=True, null=True, on_delete=models.CASCADE)
-    subscribers = models.ManyToManyField(Subscriber, related_name='newsletter_subscribers')
+    subscribers = models.ManyToManyField(Subscriber, related_name="newsletter_subscribers")
     owner = models.ForeignKey(CustomUser, verbose_name="Автор", blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
-        return f' Рассылка id {self.pk}'
+        return f" Рассылка id {self.pk}"
 
     class Meta:
         verbose_name = "Рассылка"
         verbose_name_plural = "Рассылки"
-        permissions = [("disabling_newsletter", "Can disabling Newsletter"),]
+        permissions = [
+            ("disabling_newsletter", "Can disabling Newsletter"),
+        ]
 
 
 class AttemptSent(models.Model):
-    SUCCESSFUL = 'Успешно'
-    NOT_SUCCESSFUL = 'Не успешно'
+    SUCCESSFUL = "Успешно"
+    NOT_SUCCESSFUL = "Не успешно"
 
     STATUS_CHOICES = [
-        (SUCCESSFUL, 'Успешно'),
-        (NOT_SUCCESSFUL, 'Не успешно'),
+        (SUCCESSFUL, "Успешно"),
+        (NOT_SUCCESSFUL, "Не успешно"),
     ]
 
     created_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES)
-    server_response = models.TextField(verbose_name="Ответ почтового сервера", blank=True, null=True,)
-    newsletter = models.ForeignKey(Newsletter, on_delete=models.CASCADE, related_name='newsletters')
+    server_response = models.TextField(
+        verbose_name="Ответ почтового сервера",
+        blank=True,
+        null=True,
+    )
+    newsletter = models.ForeignKey(Newsletter, on_delete=models.CASCADE, related_name="newsletters")
     owner = models.ForeignKey(CustomUser, verbose_name="Автор", blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return f"Попытка для рассылки {self.newsletter} от {self.created_at}"
-
-

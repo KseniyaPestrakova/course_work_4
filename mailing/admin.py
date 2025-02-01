@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Subscriber, Message, Newsletter, AttemptSent
+
+from .models import AttemptSent, Message, Newsletter, Subscriber
 from .services import run_newsletter
 
 
@@ -19,7 +20,7 @@ class MessageAdmin(admin.ModelAdmin):
 class NewsletterAdmin(admin.ModelAdmin):
     list_display = ("start_sent_at", "finish_sent_at", "status")
     search_fields = ("status", "message")
-    actions = ['start_newsletter']
+    actions = ["start_newsletter"]
 
     def start_newsletter(self, request, queryset):
         for newsletter in queryset:

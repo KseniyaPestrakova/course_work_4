@@ -1,9 +1,11 @@
-from django.core.mail import send_mail, BadHeaderError
+import smtplib
+
+from django.core.mail import BadHeaderError, send_mail
 from django.utils import timezone
 
 from config.settings import EMAIL_HOST_USER
-from .models import AttemptSent, Newsletter, Message, Subscriber
-import smtplib
+
+from .models import AttemptSent, Newsletter
 
 
 def sent_newsletter(newsletter):
@@ -21,7 +23,7 @@ def sent_newsletter(newsletter):
                 newsletter=newsletter,
                 created_at=timezone.now(),
                 status=AttemptSent.SUCCESSFUL,
-                server_response='Письмо успешно отправлено',
+                server_response="Письмо успешно отправлено",
                 owner=newsletter.owner,
             )
         except (smtplib.SMTPException, BadHeaderError) as e:
@@ -51,4 +53,4 @@ def run_newsletter(newsletter_id):
         newsletter.save()
 
     except Newsletter.DoesNotExist:
-        print(f'Рассылка с id {newsletter_id} не найдена')
+        print(f"Рассылка с id {newsletter_id} не найдена")

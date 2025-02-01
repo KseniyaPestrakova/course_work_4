@@ -125,6 +125,9 @@
         <li><a href="{% url 'mailing:newsletter_list' %}" class="nav-link px-2">Рассылки</a></li>
         <li><a href="{% url 'mailing:subscriber_list' %}" class="nav-link px-2">Получатели</a></li>
         <li><a href="{% url 'mailing:attemptsent_list' %}" class="nav-link px-2">Попытки рассылок</a></li>
+        {% if user.is_manager == True %}
+        <li><a href="{% url 'users:customuser_list' %}" class="nav-link px-2">Пользователи</a></li>
+        {% endif%}
     </ul>
 
     <div class="col-md-3 text-end">

@@ -1,12 +1,28 @@
 from django.urls import path
 
 from . import views
-from .views import SubscriberListView, SubscriberDetailView, SubscriberCreateView, SubscriberUpdateView, \
-    SubscriberDeleteView, MessageListView, MessageDetailView, MessageCreateView, MessageUpdateView, MessageDeleteView, \
-    NewsletterListView, NewsletterDetailView, NewsletterCreateView, NewsletterUpdateView, NewsletterDeleteView, \
-    HomeTemplateView, AttemptSentListView
+from .views import (
+    AttemptSentListView,
+    DisablingNewsletter,
+    HomeTemplateView,
+    MessageCreateView,
+    MessageDeleteView,
+    MessageDetailView,
+    MessageListView,
+    MessageUpdateView,
+    NewsletterCreateView,
+    NewsletterDeleteView,
+    NewsletterDetailView,
+    NewsletterListView,
+    NewsletterUpdateView,
+    SubscriberCreateView,
+    SubscriberDeleteView,
+    SubscriberDetailView,
+    SubscriberListView,
+    SubscriberUpdateView,
+)
 
-app_name = 'mailing'
+app_name = "mailing"
 
 urlpatterns = [
     path("", HomeTemplateView.as_view(), name="home"),
@@ -26,5 +42,6 @@ urlpatterns = [
     path("newsletter/update/<int:pk>/", NewsletterUpdateView.as_view(), name="newsletter_update"),
     path("newsletter/delete/<int:pk>/", NewsletterDeleteView.as_view(), name="newsletter_confirm_delete"),
     path("attemptsent/", AttemptSentListView.as_view(), name="attemptsent_list"),
-    path('newsletter/<int:newsletter_id>/launch/', views.start_newsletter_view, name='launch_newsletter'),
-    ]
+    path("newsletter/<int:newsletter_id>/launch/", views.start_newsletter_view, name="launch_newsletter"),
+    path("newsletter/disabling/<int:pk>/", DisablingNewsletter.as_view(), name="newsletter_disabling"),
+]

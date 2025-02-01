@@ -6,7 +6,7 @@
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
             <div class="col">
                 <div class="card shadow-sm">
-                    {% if user.is_authenticated %}
+                    {% if user.is_authenticated and user.is_manager == False %}
                     <div class="card-body">
                         <p class="card-text">{{ object.first_name }} {{ object.last_name }}</p>
                         <p class="card-text">{{ object.avatar }}</p>
@@ -22,14 +22,26 @@
                                 <a class="btn btn-primary" href="{% url 'users:customuser_update' user.pk  %}"
                                    role="button">Редактировать</a>
                                 <a class="btn btn-primary" href="{% url 'users:password_reset'  %}"
-                                   role="button">Сменить пароль</a>
-                                {% endif%}
-
+                                   role="button">Изменить пароль</a>
                             </div>
                         </div>
                     </div>
+                    {% elif user.is_manager == True %}
+                    <div class="card-body">
+                        <p class="card-text">{{ object.first_name }} {{ object.last_name }}</p>
+                        <p class="card-text">{{ object.avatar }}</p>
+                        <p class="card-text">{{ object.email }}</p>
+                        <p class="card-text">{{ object.username }}</p>
+                        <p class="card-text">{{ object.phone_number }}</p>
+                        <p class="card-text">{{ object.country }}</p>
+                        <form action="{% url 'users:customuser_blocking' customuser.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit">Блокировка пользователя</button>
+                        </form>
+                    </div>
+                    {% endif%}
+
                 </div>
             </div>
         </div>
-    </div>
-    {% endblock %}
+        {% endblock %}
