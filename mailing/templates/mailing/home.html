@@ -19,6 +19,7 @@
 
         <div class="col-md-12">
             <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+                {% if user.is_authenticated %}
                 <h2>Статистика {{ user.first_name }} {{ user.last_name }}</h2>
                 <p class="col-md-8 fs-6">Количество успешно запущенных рассылок:
                 <span class="badge rounded-pill text-bg-light">{{ successful_newsletter_count }}</span></p>
@@ -26,6 +27,7 @@
                 <span class="badge rounded-pill text-bg-light">{{ not_successful_newsletter_count }}</span></p>
                 <p class="col-md-8 fs-6">Отправлено уникальных сообщений:
                 <span class="badge rounded-pill text-bg-light">{{ sent_messages }}</span></p>
+                {% endif %}
             </div>
         </div>
     </div>

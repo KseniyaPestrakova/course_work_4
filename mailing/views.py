@@ -233,23 +233,22 @@ class HomeTemplateView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-        user = self.request.user
-        context_data["count_newsletter"] = len(Newsletter.objects.all())
 
-        active_newsletter_count = Newsletter.objects.filter(status="Запущена").count()
+        context_data["count_newsletter"] = Newsletter.objects.count()
+        context_data["active_newsletter_count"] = Newsletter.objects.filter(status="Запущена").count()
+        context_data["unique_subscribers_count"] = Subscriber.objects.distinct().count()
 
-        context_data["active_newsletter_count"] = active_newsletter_count
-
-        unique_subscribers_count = Subscriber.objects.distinct().count()
-        context_data["unique_subscribers_count"] = unique_subscribers_count
-
-        successful_newsletter_count = AttemptSent.objects.filter(owner=user, status="Успешно").count()
-        context_data["successful_newsletter_count"] = successful_newsletter_count
-
-        not_successful_newsletter_count = AttemptSent.objects.filter(owner=user, status="Не успешно").count()
-        context_data["not_successful_newsletter_count"] = not_successful_newsletter_count
-
-        sent_messages = AttemptSent.objects.filter(owner=user).values("newsletter__message").distinct().count()
-        context_data["sent_messages"] = sent_messages
+        if self.request.user.is_authenticated:
+            user = self.request.user
+            context_data["successful_newsletter_count"] = AttemptSent.objects.filter(owner=user,
+                                                                                     status="Успешно").count()
+            context_data["not_successful_newsletter_count"] = AttemptSent.objects.filter(owner=user,
+                                                                                         status="Не успешно").count()
+            context_data["sent_messages"] = AttemptSent.objects.filter(owner=user).values(
+                "newsletter__message").distinct().count()
+        else:
+            context_data["successful_newsletter_count"] = 0
+            context_data["not_successful_newsletter_count"] = 0
+            context_data["sent_messages"] = 0
 
         return context_data
