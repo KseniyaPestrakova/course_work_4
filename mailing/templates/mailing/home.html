@@ -1,0 +1,35 @@
+{% extends 'mailing/base.html' %}
+
+{% block content %}
+
+<div class="container py-4">
+
+    <div class="p-5 mb-4 bg-body-tertiary rounded-3">
+        <div class="container-fluid py-5">
+            <h1 class="display-3 fw-semibold">Главная</h1>
+            <p class="col-md-8 fs-4">Количество всех рассылок:
+                <span class="badge rounded-pill text-bg-primary">{{ count_newsletter }}</span></p>
+            <p class="col-md-8 fs-4">Количество активных рассылок:
+                <span class="badge rounded-pill text-bg-success">{{ active_newsletter_count }}</span></p>
+            <p class="col-md-8 fs-4">Количество уникальных получателей:
+                <span class="badge rounded-pill text-bg-light">{{ unique_subscribers_count }}</span></p>
+        </div>
+    </div>
+    <div class="row align-items-md-stretch">
+
+        <div class="col-md-12">
+            <div class="h-100 p-5 bg-body-tertiary border rounded-3">
+                {% if user.is_authenticated %}
+                <h2>Статистика {{ user.first_name }} {{ user.last_name }}</h2>
+                <p class="col-md-8 fs-6">Количество успешно запущенных рассылок:
+                <span class="badge rounded-pill text-bg-light">{{ successful_newsletter_count }}</span></p>
+                <p class="col-md-8 fs-6">Количество неудачных рассылок:
+                <span class="badge rounded-pill text-bg-light">{{ not_successful_newsletter_count }}</span></p>
+                <p class="col-md-8 fs-6">Отправлено уникальных сообщений:
+                <span class="badge rounded-pill text-bg-light">{{ sent_messages }}</span></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
